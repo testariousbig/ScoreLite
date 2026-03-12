@@ -1,38 +1,17 @@
 const BASE_URL = 'https://api.football-data.org/v4'
 
-function setCors(res) {
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS')
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With')
-  res.setHeader('Access-Control-Max-Age', '86400')
-}
-
 export default async function handler(req, res) {
-  setCors(res)
-
-  if (req.method === 'OPTIONS') {
-    res.statusCode = 204
-    res.end()
-    return
-  }
-
   if (req.method !== 'GET') {
-    res.statusCode = 405
-    res.setHeader('Content-Type', 'application/json; charset=utf-8')
-    res.end(JSON.stringify({ error: 'Method not allowed' }))
+    res.status(405).json({ error: 'Method not allowed' })
     return
   }
 
   const token = process.env.FOOTBALL_DATA_TOKEN
   if (!token) {
-    res.statusCode = 500
-    res.setHeader('Content-Type', 'application/json; charset=utf-8')
-    res.end(
-      JSON.stringify({
-        error: 'Missing env var FOOTBALL_DATA_TOKEN',
-        hint: 'Configura FOOTBALL_DATA_TOKEN en tu proveedor (Vercel/Netlify).',
-      }),
-    )
+    res.status(500).json({
+      error: 'Missing env var FOOTBALL_DATA_TOKEN',
+      hint: 'Configura FOOTBALL_DATA_TOKEN en tu proyecto de Vercel.',
+    })
     return
   }
 
@@ -55,7 +34,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const upstreamRes = await fetch(upstreamUrl, {
+    const upstreamRes = await fetch(upstreamUrl.toString(), {
       headers: {
         'X-Auth-Token': token,
       },
@@ -63,16 +42,14 @@ export default async function handler(req, res) {
 
     const text = await upstreamRes.text()
 
-    res.statusCode = upstreamRes.status
+    res.status(upstreamRes.status)
     res.setHeader(
       'Content-Type',
       upstreamRes.headers.get('content-type') ?? 'application/json; charset=utf-8',
     )
-    res.end(text)
+    res.send(text)
   } catch (err) {
-    res.statusCode = 502
-    res.setHeader('Content-Type', 'application/json; charset=utf-8')
-    res.end(JSON.stringify({ error: 'Upstream request failed' }))
+    res.status(502).json({ error: 'Upstream request failed' })
   }
 }
 
