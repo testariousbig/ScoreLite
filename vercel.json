@@ -1,7 +1,4 @@
 {
-  "framework": "vite",
-  "devCommand": "vite --port 5173",
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist"
+  "framework": "vite"
 }
 
