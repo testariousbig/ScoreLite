@@ -4,6 +4,8 @@ import { QueryClient } from '@tanstack/react-query'
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
 import { BrowserRouter } from 'react-router-dom'
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 import './index.css'
 import App from './App.tsx'
 
@@ -35,6 +37,8 @@ createRoot(document.getElementById('root')!).render(
     >
       <BrowserRouter>
         <App />
+        <Analytics />
+        <SpeedInsights />
       </BrowserRouter>
     </PersistQueryClientProvider>
   </StrictMode>,
