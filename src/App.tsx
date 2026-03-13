@@ -8,13 +8,11 @@ export default function App() {
       <header className="sticky top-0 z-10 border-b border-white/10 bg-slate-950/70 backdrop-blur">
         <div className="mx-auto flex w-full max-w-5xl items-center justify-between gap-4 px-4 py-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-linear-to-tr from-emerald-400 via-sky-400 to-indigo-500 text-slate-950 shadow-lg shadow-emerald-500/40">
-              <span className="text-sm font-black tracking-tight">SL</span>
-            </div>
-            <div>
-              <div className="text-lg font-semibold tracking-tight">ScoreLite</div>
-              <div className="text-sm text-slate-300">LaLiga (Primera División)</div>
-            </div>
+            <img
+              src="/logo_scorelite.png"
+              alt="ScoreLite"
+              className="w-60"
+            />
           </div>
 
           <nav className="flex gap-2">
