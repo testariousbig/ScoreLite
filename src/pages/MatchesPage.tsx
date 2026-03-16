@@ -15,7 +15,7 @@ export function MatchesPage() {
     staleTime: 1000 * 60 * 10,
   })
 
-  const { isFavoriteTeam, toggleFavoriteTeam } = useFavoriteTeam()
+  const { isFavoriteTeam } = useFavoriteTeam()
 
   const [matchday, setMatchday] = useState<number | null>(null)
 
