@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getCompetition, getMatches } from '../lib/footballDataApi'
 import type { Match } from '../lib/footballDataTypes'
 import { formatKickoff } from '../lib/format'
+import { useFavoriteTeam } from '../hooks/useFavoriteTeam'
 import { Card } from '../components/ui/Card'
 import { Badge } from '../components/ui/Badge'
 import { Spinner } from '../components/ui/Spinner'
@@ -14,11 +15,11 @@ export function MatchesPage() {
     staleTime: 1000 * 60 * 10,
   })
 
+  const { isFavoriteTeam, toggleFavoriteTeam } = useFavoriteTeam()
+
   const [matchday, setMatchday] = useState<number | null>(null)
 
-  const effectiveMatchday = competitionQuery.data?.currentSeason?.currentMatchday
-    ? Math.min(matchday ?? competitionQuery.data.currentSeason.currentMatchday, competitionQuery.data.currentSeason.currentMatchday)
-    : matchday ?? 1
+  const effectiveMatchday = matchday ?? competitionQuery.data?.currentSeason?.currentMatchday ?? 1
 
   const matchesQuery = useQuery({
     queryKey: ['matches', 'PD', { matchday: effectiveMatchday }],
@@ -27,7 +28,7 @@ export function MatchesPage() {
     staleTime: 1000 * 60,
   })
 
-  const matchdayMax = competitionQuery.data?.currentSeason?.currentMatchday ?? 38
+  const matchdayMax = 38
   const matchesByDate = useMemo(() => groupMatchesByLocalDate(matchesQuery.data?.matches ?? []), [matchesQuery.data])
 
   return (
@@ -132,20 +133,24 @@ export function MatchesPage() {
                 {ms.map((m) => (
                   <li
                     key={m.id}
-                    className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 py-3 max-[680px]:grid-cols-[auto_minmax(0,1fr)] max-[680px]:gap-y-2"
+                    className={`grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 py-3 max-[680px]:grid-cols-[auto_minmax(0,1fr)] max-[680px]:gap-y-2 ${
+                      isFavoriteTeam(m.homeTeam.id) || isFavoriteTeam(m.awayTeam.id)
+                        ? 'bg-yellow-400/5 border-l-2 border-l-yellow-400/30 -mx-4 px-4'
+                        : ''
+                    }`}
                   >
                     <div className="text-sm tabular-nums text-slate-300">
                       {formatKickoff(m.utcDate).time}
                     </div>
                     <div className="min-w-0">
-                      <div className="w-1/2 mx-auto grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-lg">
+                      <div className="max-[680px]:w-60 w-5/6 mx-auto grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-lg">
                         {/* Local alineado a la izquierda */}
                         <div className="flex min-w-0 items-center justify-start gap-1.5">
                           {m.homeTeam.crest && (
                             <img
                               src={m.homeTeam.crest}
                               alt={m.homeTeam.name}
-                              className="h-5 w-5 shrink-0 rounded-full border border-white/20 bg-slate-900 object-contain"
+                              className="h-7 w-7 shrink-0"
                             />
                           )}
                           <span
@@ -157,7 +162,8 @@ export function MatchesPage() {
                                   : 'font-semibold text-slate-100'
                             }`}
                           >
-                            {m.homeTeam.shortName ?? m.homeTeam.name}
+                            <span className="hidden max-[680px]:inline">{m.homeTeam.tla}</span>
+                            <span className="inline max-[680px]:hidden">{m.homeTeam.name}</span>
                           </span>
                         </div>
 
@@ -177,13 +183,14 @@ export function MatchesPage() {
                                   : 'font-semibold text-slate-100'
                             }`}
                           >
-                            {m.awayTeam.shortName ?? m.awayTeam.name}
+                            <span className="hidden max-[680px]:inline">{m.awayTeam.tla}</span>
+                            <span className="inline max-[680px]:hidden">{m.awayTeam.name}</span>
                           </span>
                           {m.awayTeam.crest && (
                             <img
                               src={m.awayTeam.crest}
                               alt={m.awayTeam.name}
-                              className="h-5 w-5 shrink-0 rounded-full border border-white/20 bg-slate-900 object-contain"
+                              className="h-7 w-7 shrink-0"
                             />
                           )}
                         </div>

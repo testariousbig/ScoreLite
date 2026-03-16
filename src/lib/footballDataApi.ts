@@ -1,5 +1,5 @@
 import { apiGet } from './apiClient'
-import type { CompetitionResponse, MatchesResponse, StandingsResponse } from './footballDataTypes'
+import type { CompetitionResponse, MatchesResponse, StandingsResponse, ScorersResponse } from './footballDataTypes'
 
 export const LALIGA_CODE = 'PD'
 
@@ -18,5 +18,9 @@ export function getMatches(params?: { matchday?: number; dateFrom?: string; date
 
 export function getStandings() {
   return apiGet<StandingsResponse>(`/competitions/${LALIGA_CODE}/standings`)
+}
+
+export function getScorers() {
+  return apiGet<ScorersResponse>(`/competitions/${LALIGA_CODE}/scorers`)
 }
 

@@ -59,3 +59,27 @@ export type StandingRow = {
   form?: string | null
 }
 
+export type ScorersResponse = {
+  competition?: { id: number; name: string; code?: string; emblem?: string }
+  season?: { startDate?: string; endDate?: string; currentMatchday?: number }
+  scorers: Scorer[]
+}
+
+export type Scorer = {
+  id: number
+  player: {
+    id: number
+    name: string
+    firstName?: string
+    lastName?: string
+    dateOfBirth?: string
+    nationality?: string
+    lastUpdated?: string
+  }
+  team: { id: number; name: string; shortName?: string; tla?: string; crest?: string }
+  playedMatches: number
+  goals: number
+  assists?: number
+  penalties?: number
+}
+

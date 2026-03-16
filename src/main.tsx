@@ -27,7 +27,7 @@ const persister = createSyncStoragePersister({
   key: 'rq-futbol-cache',
 })
 
-const maxAge = 1000 * 60 * 60 * 6 // 6h
+const maxAge = 1000 * 60 * 60 * 2 // 2h
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
