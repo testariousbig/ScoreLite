@@ -24,3 +24,12 @@ export function getScorers() {
   return apiGet<ScorersResponse>(`/competitions/${LALIGA_CODE}/scorers`)
 }
 
+export function getTeamMatches(teamId: number, params?: { dateFrom?: string; dateTo?: string; limit?: number }) {
+  const qs = new URLSearchParams()
+  if (params?.dateFrom) qs.set('dateFrom', params.dateFrom)
+  if (params?.dateTo) qs.set('dateTo', params.dateTo)
+  if (params?.limit) qs.set('limit', String(params.limit))
+  const suffix = qs.size ? `?${qs.toString()}` : ''
+  return apiGet<MatchesResponse>(`/teams/${teamId}/matches${suffix}`)
+}
+

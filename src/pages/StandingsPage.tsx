@@ -6,7 +6,7 @@ import { Table } from '../components/ui/Table'
 import { Spinner } from '../components/ui/Spinner'
 
 export function StandingsPage() {
-  const { isFavoriteTeam, toggleFavoriteTeam } = useFavoriteTeam()
+  const { isFavoriteTeam } = useFavoriteTeam()
 
   const standingsQuery = useQuery({
     queryKey: ['standings', 'PD'],
@@ -65,20 +65,6 @@ export function StandingsPage() {
                 <td className="px-4 py-3 tabular-nums text-slate-200">{row.position}</td>
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-3">
-                    <button
-                      type="button"
-                      onClick={() => toggleFavoriteTeam(row.team.id)}
-                      className={`h-7 w-7 shrink-0 rounded-full border flex items-center justify-center transition-colors ${
-                        isFavoriteTeam(row.team.id)
-                          ? 'bg-yellow-400/20 border-yellow-400/50'
-                          : 'border-white/20 bg-slate-900 hover:border-white/40'
-                      }`}
-                      title={isFavoriteTeam(row.team.id) ? 'Quitar de favoritos' : 'Añadir a favoritos'}
-                    >
-                      {isFavoriteTeam(row.team.id) && (
-                        <span className="text-yellow-400 text-sm">★</span>
-                      )}
-                    </button>
                     {row.team.crest && (
                       <img
                         src={row.team.crest}

@@ -7,6 +7,8 @@ import { useFavoriteTeam } from '../hooks/useFavoriteTeam'
 import { Card } from '../components/ui/Card'
 import { Badge } from '../components/ui/Badge'
 import { Spinner } from '../components/ui/Spinner'
+import { FavoriteTeamSummary } from '../components/FavoriteTeamSummary'
+import { TeamSelector } from '../components/TeamSelector'
 
 export function MatchesPage() {
   const competitionQuery = useQuery({
@@ -33,6 +35,10 @@ export function MatchesPage() {
 
   return (
     <section className="space-y-4">
+      <TeamSelector />
+      
+      <FavoriteTeamSummary />
+      
       <div className="mb-4 flex items-end justify-between gap-4">
         <div>
           <h1 className="text-xl font-semibold tracking-tight">Partidos</h1>
