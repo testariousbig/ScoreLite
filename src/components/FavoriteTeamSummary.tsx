@@ -87,16 +87,6 @@ export function FavoriteTeamSummary({ className = '' }: FavoriteTeamSummaryProps
     .sort((a, b) => new Date(a.utcDate).getTime() - new Date(b.utcDate).getTime())
     .slice(0, 3)
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    return date.toLocaleDateString('es-ES', { 
-      day: 'numeric', 
-      month: 'short', 
-      hour: '2-digit', 
-      minute: '2-digit' 
-    })
-  }
-
   const getOutcome = (match: Match): 'home' | 'away' | 'draw' | null => {
     const ft = match.score?.fullTime
     const home = ft?.home
